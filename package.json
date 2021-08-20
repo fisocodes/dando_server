@@ -2,7 +2,7 @@
   "name": "dando_server",
   "version": "1.0.0",
   "description": "Server for dando",
-  "main": "server.js",
+  "main": "app.js",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
