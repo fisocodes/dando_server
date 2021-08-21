@@ -32,16 +32,17 @@ router.post('/authenticate', passport.authenticate('local', {session: false}), f
 });
 
 router.post('/create', function(req, res){
-    let message = "New message";
+
     bcrypt.hash(req.body.password, 14, (e, hash) => {
-        database.createUser(req.body.username, hash, req.body.name, req.body.surname, req.body.dob, req.body.photo, function(message){
+        req.body.password = hash
+        database.createUser(req.body, (message) => {
             res.send(message);
         });
     });
 });
 
 router.put('/update', function(req, res){
-    database.updateUser(req.body.username, req.body.password, req.body.name, req.body.surname, req.body.age, req.body.photo, req.body.id);
+    database.updateUser(req.body);
     res.send('Update user');
 });
 

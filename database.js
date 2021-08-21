@@ -1,45 +1,37 @@
-const sqlite3 = require('sqlite3');
+const {MongoClient} = require('mongodb');
 
-let connect = function(mode){
-    let db = new sqlite3.Database('./databases/dando.db', mode, function(e){
+const uri = 'mongodb+srv://fisocodes:sotooscar1@dandocluster.8qole.mongodb.net/dando-database?retryWrites=true&w=majority'
+const client = new MongoClient(uri);
+
+async function connect(cb) {
+    try {
+        await client.connect(); 
+        await cb(null, client.db());
+    }catch (e){
+        console.log(`Failed to connect to the databse: ${e.message}`);
+        cb(e, null);
+    }finally{
+        client.close();
+    }
+}
+
+let createUser = function(user, cb){
+    connect( async (e, db) => {
         if(e)
-            console.error(e.message);
-        
-        console.log('Connected to the dando database.');
+            cb(e);
+        else{
+            await db.collection('users').insertOne(user);
+            cb("User created succesfully");
+        }
+    });
+}
+
+let updateUser = function(user){
     
-    });
-    return db;
 }
 
-let createUser = function(username, password, name, surname, dob, photo, cb){
-    db = connect(sqlite3.OPEN_READWRITE);
-
-    const sql = `INSERT INTO users(username, password, name, surname, dob, photo) VALUES(?, ?, ?, ?, ?, ?)`;
-    db.run(sql, [username, password, name, surname, dob, photo], function(e){
-           cb(e ? `Error creating user: ${e.message}` : 'User created succesfully');
-    });
-}
-
-let updateUser = function(username, password, name, surname, dob, photo, id){
-    db = connect(sqlite3.OPEN_READWRITE);
-
-    const sql = `UPDATE users SET username = ?, password = ?, name = ?, surname = ?, dob = ?, photo = ? WHERE id = ?`;
-    db.run(sql, [username, password, name, surname, dob, photo, id], function(e){
-        if(e)
-            return console.log(e.message);
-        console.log(`User updated. Changes: ${this.changes}`);
-    });
-}
-
-let deleteUser = function(id){
-    db = connect(sqlite3.OPEN_READWRITE);
-
-    const sql = `DELETE FROM users where id = ?`;
-    db.run(sql, [id], function(e){
-        if(e)
-            return console.log(e.message);
-        console.log(`User deleted. Changes: ${this.changes}`);
-    });
+let deleteUser = function(userId){
+    
 }
 
 module.exports.connect = connect;
