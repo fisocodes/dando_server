@@ -21,8 +21,10 @@ router.post('/create', function(req, res){
             mongoose.connect("mongodb+srv://fisocodes:sotooscar1@dandocluster.8qole.mongodb.net/dando-database?retryWrites=true&w=majority", {useNewUrlParser: true}, () => {
                 const user = new User(req.body);
                 user.save(e => {
-                    if(e)
+                    if(e){
+                        console.log(e);
                         res.status(500).send(e.message);
+                    }
                     else
                         res.status(201).send("User created succesfully");
                 }); 
