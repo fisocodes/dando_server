@@ -45,14 +45,14 @@ router.post('/authenticate', function(req, res, next){
         }
 
         if(!user){
-            res.send('User does not exists');
+            res.status(500).send('User does not exists');
         }
         else{
             bcrypt.compare(req.body.password, user.password, function(err, result){
                 if(result)
                     res.send('User authenticated');
                 else
-                    res.send('Wrong password');
+                res.status(500).send('Wrong password');
             });
         }
         
