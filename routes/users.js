@@ -2,14 +2,61 @@ const express = require('express');
 const router = express.Router();
 const bcrypt =  require('bcrypt');
 const mongoose = require('mongoose');
+const passport =  require('passport');
+const LocalStrategy =  require('passport-local').Strategy;
 
 const User = require('../database/Models/user');
+
+passport.use(new LocalStrategy(
+    function(username, password, done){
+        try{
+            mongoose.connect("mongodb+srv://fisocodes:sotooscar1@dandocluster.8qole.mongodb.net/dando-database?retryWrites=true&w=majority", {useNewUrlParser: true}, () => {
+                User.findOne({'username' : username}, function(e, user){
+                    if(e){
+                        return done(e);
+                    }
+                    
+                    if(!user){
+                        return done(null, false, { message : 'User does not exists'})
+                    }
+
+                    return done(null, user);
+                });
+            });        
+        }
+        catch(e) {
+            console.log(e.message);
+            res.status(500).send(e.message);
+        }
+    }
+));
+
+router.use(passport.initialize());
 
 router.use(express.json());
 
 
-router.post('/authenticate', function(req, res){
-    res.send('Authenticate user');
+router.post('/authenticate', function(req, res, next){
+    passport.authenticate('local', {session: false}, function(e, user, info){
+        console.log(req.body);
+        console.log(user);
+        if(e){
+            res.send(e.message);
+        }
+
+        if(!user){
+            res.send('User does not exists');
+        }
+        else{
+            bcrypt.compare(req.body.password, user.password, function(err, result){
+                if(result)
+                    res.send('User authenticated');
+                else
+                    res.send('Wrong password');
+            });
+        }
+        
+    })(req, res, next);
 });
 
 router.post('/create', function(req, res){
