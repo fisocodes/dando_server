@@ -45,7 +45,7 @@ router.post('/authenticate', function(req, res, next){
         }
 
         if(!user){
-            res.status(500).send('User does not exists');
+            res.status(500).send('User does not exist');
         }
         else{
             bcrypt.compare(req.body.password, user.password, function(err, result){
