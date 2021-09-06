@@ -38,8 +38,6 @@ router.use(express.json());
 
 router.post('/authenticate', function(req, res, next){
     passport.authenticate('local', {session: false}, function(e, user, info){
-        console.log(req.body);
-        console.log(user);
         if(e){
             res.send(e.message);
         }
@@ -65,11 +63,13 @@ router.post('/create', function(req, res){
         res.status(500).send("Not a valid token");
     }
     else{
+        console.log(req.body.username.match(/^[A-Za-z0-9_]$/));
+        console.log(req.body.password.match(/^[A-Za-z0-9_]$/));
 
-        if(req.body.username.match(/[a-zA-Z0-9_-]/) === null){
+        if(req.body.username.match(/^[A-Za-z0-9_]+$/) === null){
             res.status(500).send("Username is not valid");
         }
-        else if(req.body.username.match(/[a-zA-Z0-9]/) === null){
+        else if(req.body.password.match(/^[A-Za-z0-9_]+$/) === null){
             res.status(500).send("Password is not valid");
         }
         else{
