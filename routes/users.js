@@ -17,11 +17,10 @@ const store = new MongoDBStore({
 
 router.use(session({
     secret: 'the secret',
-    cookie: {maxAge: 2000 * 60, secure: true},
+    cookie: {maxAge: 2000 * 60},
     store: store,
     resave: true,
     saveUninitialized: true,
-    sameSite: 'none'
 }));
 
 passport.use(new LocalStrategy(
