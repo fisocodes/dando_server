@@ -20,7 +20,8 @@ router.use(session({
     cookie: {maxAge: 2000 * 60, secure: true},
     store: store,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    sameSite: 'none'
 }));
 
 passport.use(new LocalStrategy(
