@@ -24,8 +24,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(cors());
-
 app.use('/users', users);
 
 app.get('/', function(req, res){
