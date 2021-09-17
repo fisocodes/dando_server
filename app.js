@@ -5,7 +5,7 @@ const users = require('./routes/users');
 
 const app = express();
 
-app.use(cors({origin: 'http://locahost:3000', credentials: true}));
+app.use(cors({origin: 'http://locahost:3000/', credentials: true}));
 
 app.use('/users', users);
 
