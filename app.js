@@ -6,7 +6,7 @@ const users = require('./routes/users');
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000'], 
+    origin: ['http://localhost:3000', 'https://dando.netlify.app'], 
     credentials: true, 
     methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'DELETE'],
     exposedHeaders: ["set-cookie"]
