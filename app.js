@@ -5,7 +5,7 @@ const users = require('./routes/users');
 
 const app = express();
 
-app.use(cors({origin: true, credentials: true, allowedHeaders: '*'}));
+app.use(cors({origin: true, credentials: true}));
 
 app.use('/users', users);
 
