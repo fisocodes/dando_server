@@ -17,7 +17,7 @@ const store = new MongoDBStore({
 
 router.use(session({
     secret: 'the secret',
-    cookie: {maxAge: 2000 * 60, secure: false},
+    cookie: {maxAge: 2000 * 60, sameSite: 'none', secure: true},
     store: store,
     resave: true,
     saveUninitialized: true,
