@@ -9,7 +9,6 @@ app.use(cors({
     origin: ['http://localhost:3000', 'https://dando.netlify.app'], 
     credentials: true, 
     methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'DELETE'],
-    exposedHeaders: ["set-cookie"]
 }));
 
 app.use('/users', users);
