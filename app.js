@@ -5,7 +5,7 @@ const users = require('./routes/users');
 
 const app = express();
 
-app.use(cors({origin: 'https://dando.netlify.app/', credentials: true, preflightContinue: true}));
+app.use(cors({origin: 'https://dando.netlify.app', credentials: true, preflightContinue: true}));
 
 app.use('/users', users);
 
