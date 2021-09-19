@@ -1,5 +1,4 @@
 const express = require('express');
-const connect = require('connect');
 const router = express.Router();
 const bcrypt =  require('bcrypt');
 const mongoose = require('mongoose');
@@ -19,7 +18,7 @@ const store = new MongoDBStore({
 
 router.use(session({
     secret: 'the secret',
-    cookie: {maxAge: 2000 * 60, sameSite: 'none', secure: true},
+    cookie: {maxAge: 5000 * 60, sameSite: 'none', secure: true},
     store: store,
     resave: true,
     saveUninitialized: true,
@@ -67,19 +66,23 @@ router.post('/authenticate', function(req, res, next){
         passport.authenticate('local', {session: false}, function(e, user, info){
             if(e){
                 res.send(e.message);
+                console.log('Error with local strategy');
             }
-    
-            if(!user){
+            else if(!user){
                 res.status(500).send({message: 'User does not exist', user: null});
+                console.log('Error user does not exist');
             }
             else{
                 bcrypt.compare(req.body.password, user.password, function(err, result){
                     if(result){
                         req.session.user = user;
                         res.send({message: 'User authenticated', user: user});
+                        console.log(req.session);
                     }
-                    else
-                    res.status(500).send({message: 'Wrong password', user: null});
+                    else{
+                        res.status(500).send({message: 'Wrong password', user: null});
+                        console.log('Error wrong password');
+                    }
                 });
             }
             
