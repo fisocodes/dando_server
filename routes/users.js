@@ -60,7 +60,7 @@ router.post('/authenticate', function(req, res, next){
 
     if(req.session.user)
     {
-        res.send({message: `Welcome back ${req.session.user.username}!`, user: req.session.user});
+        res.send({message: `Welcome back ${req.session.user.username} <3!`, user: req.session.user});
     }
     else{
         passport.authenticate('local', {session: false}, function(e, user, info){
@@ -76,7 +76,7 @@ router.post('/authenticate', function(req, res, next){
                 bcrypt.compare(req.body.password, user.password, function(err, result){
                     if(result){
                         req.session.user = user;
-                        res.send({message: 'User authenticated', user: user});
+                        res.send({message: `Welcome ${user.username} <3!`, user: user});
                         console.log(req.session);
                     }
                     else{
